@@ -1,20 +1,11 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { action } from '@storybook/addon-actions';
 
 import Pagination from './Pagination';
-
-// Redux store mock
-const store = {
-  getState: () => {},
-  subscribe: () => 0,
-  dispatch: action('dispatch'),
-};
 
 export default {
   component: Pagination,
   title: 'Gallery/Pagination',
-  decorators: [(story) => <Provider store={store}>{story()}</Provider>],
+  argTypes: { onPageChange: { action: 'pageChange' } },
 };
 
 const Template = (args) => <Pagination {...args} />;

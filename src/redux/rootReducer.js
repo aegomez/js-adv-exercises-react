@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { galleryReducer } from '../42-gallery/state';
+import { galleryReducer } from './gallery/reducer';
 
 export default combineReducers({
   gallery: galleryReducer,
