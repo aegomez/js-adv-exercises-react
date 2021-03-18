@@ -1,10 +1,10 @@
 import React from 'react';
 
-import GalleryPage from './GalleryPage';
+import Gallery from './Gallery';
 
 export default {
-  component: GalleryPage,
-  title: 'Gallery/GalleryPage',
+  component: Gallery,
+  title: 'Gallery/Gallery',
   argTypes: {
     onPageChange: { action: 'pageChange' },
     onScrollToBottom: { action: 'scrollToBottom' },
@@ -40,7 +40,7 @@ const testImages = [
   },
 ];
 
-const Template = (args) => <GalleryPage {...args} />;
+const Template = (args) => <Gallery {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -91,11 +91,56 @@ TallImages.args = {
       testImages[2],
       testImages[2],
       testImages[4],
-      testImages[2],
+      testImages[4],
       testImages[4],
       testImages[2],
-      testImages[4],
+      testImages[2],
     ],
   },
   loading: false,
+};
+
+export const Mixed = Template.bind({});
+Mixed.args = {
+  pageData: {
+    page: 5,
+    total: 7,
+    images: [
+      testImages[0],
+      testImages[1],
+      testImages[2],
+      testImages[3],
+      testImages[4],
+      testImages[4],
+      testImages[3],
+      testImages[2],
+      testImages[1],
+      testImages[0],
+      testImages[0],
+      testImages[3],
+      testImages[3],
+      testImages[1],
+      testImages[1],
+      testImages[4],
+      testImages[4],
+      testImages[4],
+      testImages[2],
+      testImages[2],
+    ],
+  },
+};
+
+export const MixedSmall = Template.bind({});
+MixedSmall.args = {
+  pageData: {
+    ...Mixed.args.pageData,
+    page: 6,
+  },
+  rowHeight: 160,
+};
+
+export const MixedLoading = Template.bind({});
+MixedLoading.args = {
+  ...Mixed.args,
+  loading: true,
 };

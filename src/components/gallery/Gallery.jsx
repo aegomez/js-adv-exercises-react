@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { GridList } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
@@ -13,17 +12,22 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     overflow: 'hidden',
   },
+  grid: (props) => ({
+    display: 'grid',
+    grid: `auto-flow dense ${props.rowHeight}px / repeat(${props.cols}, 1fr)`,
+    gap: '8px',
+    margin: '0 0 8px',
+    padding: '0',
+  }),
 }));
 
-export default function GalleryPage({
+export default function Gallery({
   pageData: { images, page, total },
-  imageHeight = 240,
+  rowHeight = 240,
   loading = false,
   onScrollToBottom,
   onPageChange,
 }) {
-  const classes = useStyles();
-
   // calculate number of columns based on available width
   const [width, setWidth] = useState(0);
   const measuredRef = useCallback((node) => {
@@ -31,7 +35,9 @@ export default function GalleryPage({
       setWidth(node.getBoundingClientRect().width);
     }
   }, []);
-  const cols = Math.min(Math.floor(width / imageHeight), images.length);
+  const cols = Math.min(Math.floor(width / rowHeight), images.length);
+
+  const classes = useStyles({ rowHeight, cols });
 
   // page scrolling event listener
   const [bottomReached, setBottomReached] = useState(false);
@@ -53,22 +59,11 @@ export default function GalleryPage({
 
   return (
     <div ref={measuredRef} className={classes.root}>
-      <GridList cellHeight={imageHeight} cols={cols}>
-        {images.map((image, idx) => {
-          const props = {
-            src: loading ? null : image.src,
-            cols: 1,
-            rows: 1,
-          };
-          if (image.width / image.height > 2) {
-            props.cols = 2;
-          } else if (image.height / image.width > 2) {
-            props.rows = 2;
-          }
-          return <Image key={idx} {...props} />;
-        })}
-      </GridList>
-
+      <ul className={classes.grid}>
+        {images.map((image, idx) => (
+          <Image key={idx} loading={loading} {...image} />
+        ))}
+      </ul>
       <Pagination
         pageCount={total}
         currentPage={page}
@@ -78,7 +73,7 @@ export default function GalleryPage({
   );
 }
 
-GalleryPage.propTypes = {
+Gallery.propTypes = {
   pageData: PropTypes.shape({
     id: PropTypes.string,
     page: PropTypes.number,
@@ -89,7 +84,7 @@ GalleryPage.propTypes = {
       height: PropTypes.number,
     }),
   }),
-  imageHeight: PropTypes.number,
+  rowHeight: PropTypes.number,
   loading: PropTypes.bool,
   onScrollToBottom: PropTypes.func,
   onPageChange: PropTypes.func,
