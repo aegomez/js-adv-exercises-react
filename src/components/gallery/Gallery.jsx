@@ -10,7 +10,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    overflowY: 'auto',
     height: '95vh',
   },
   grid: (props) => ({
@@ -19,6 +18,7 @@ const useStyles = makeStyles(() => ({
     gap: '8px',
     margin: '0 0 8px',
     padding: '0',
+    overflowY: 'auto',
   }),
 }));
 
@@ -52,8 +52,8 @@ export default function Gallery({
   }
 
   return (
-    <div ref={measuredRef} className={classes.root} onScroll={handleScroll}>
-      <ul className={classes.grid}>
+    <div ref={measuredRef} className={classes.root}>
+      <ul className={classes.grid} onScroll={handleScroll} aria-label="gallery">
         {images.map((image, idx) => (
           <Image key={idx} loading={loading} {...image} />
         ))}
@@ -72,11 +72,13 @@ Gallery.propTypes = {
     id: PropTypes.string,
     page: PropTypes.number,
     total: PropTypes.number,
-    images: PropTypes.shape({
-      src: PropTypes.string,
-      width: PropTypes.number,
-      height: PropTypes.number,
-    }),
+    images: PropTypes.arrayOf(
+      PropTypes.shape({
+        src: PropTypes.string,
+        width: PropTypes.number,
+        height: PropTypes.number,
+      })
+    ),
   }),
   rowHeight: PropTypes.number,
   loading: PropTypes.bool,
