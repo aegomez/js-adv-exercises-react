@@ -9,7 +9,7 @@ export default {
     onPageChange: { action: 'pageChange' },
     onScrollToBottom: { action: 'scrollToBottom' },
   },
-  decorators: [(story) => <div style={{ maxWidth: '1200px' }}>{story()}</div>],
+  decorators: [(story) => <div style={{ maxWidth: '1220px' }}>{story()}</div>],
 };
 
 const testImages = [
